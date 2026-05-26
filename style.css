@@ -7,6 +7,8 @@
     --accent-color: #38bdf8;
     --accent-hover: #7dd3fc;
     --danger-color: #ef4444;
+    --upload-color: #a78bfa;
+    --upload-hover: #c4b5fd;
     --border-color: #334155;
     --font-mono: 'Fira Code', 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -115,6 +117,7 @@ header p {
     flex-wrap: wrap;
 }
 
+.btn-upload,
 .btn-paste,
 .btn-clear,
 .btn-run {
@@ -127,6 +130,17 @@ header p {
     border: none;
     white-space: nowrap;
     letter-spacing: 0.3px;
+}
+
+.btn-upload {
+    background: rgba(167, 139, 250, 0.12);
+    color: var(--upload-color);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+.btn-upload:hover {
+    background: rgba(167, 139, 250, 0.22);
+    border-color: rgba(167, 139, 250, 0.45);
 }
 
 .btn-paste {

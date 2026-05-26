@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-
-<html>
-<head>
-    <meta charset="utf-8">
-    <title></title>
-</head>
-<body>
-    
-</body>
-</html>
-
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +10,7 @@
     <div class="app-container">
         <header>
             <h1><span class="logo">&lt;/&gt;</span> CodePreview<span>.live</span></h1>
-            <p>Write your full HTML, CSS, and JS in one place.</p>
+            <p>Write or upload your HTML, CSS, and JS files.</p>
         </header>
 
         <main class="editor-container">
@@ -30,6 +18,8 @@
                 <div class="editor-header">
                     <span class="lang-label">Code Editor (HTML/CSS/JS)</span>
                     <div class="editor-controls">
+                        <input type="file" id="file-input" accept=".html,.htm,.css,.js,.txt" multiple style="display: none;">
+                        <button class="btn-upload" onclick="document.getElementById('file-input').click()">Upload Files</button>
                         <button class="btn-paste" onclick="pasteCode()">Paste</button>
                         <button class="btn-clear" onclick="clearCode()">Clear</button>
                         <button class="btn-run" onclick="runPreview()">Run Preview</button>
