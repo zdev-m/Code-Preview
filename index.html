@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Code Previewer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1><span class="logo">&lt;/&gt;</span> CodePreview<span>.live</span></h1>
+            <p>Write your full HTML, CSS, and JS in one place.</p>
+        </header>
+
+        <main class="editor-container">
+            <div class="editor-block">
+                <div class="editor-header">
+                    <span class="lang-label">Code Editor (HTML/CSS/JS)</span>
+                    <div class="editor-controls">
+                        <button class="btn-secondary" onclick="pasteCode()">Paste</button>
+                        <button class="btn-secondary" onclick="clearCode()">Clear</button>
+                    </div>
+                </div>
+                <div class="editor-wrapper">
+                    <div class="line-numbers" id="line-numbers">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
+                    <textarea id="main-editor" spellcheck="false" placeholder="<html>
+  <style>
+    body { background: #f0f0f0; }
+  </style>
+  <body>
+    <h1>Hello World</h1>
+    <script>
+      console.log('Hello!');
+    </script>
+  </body>
+</html>"></textarea>
+                </div>
+            </div>
+        </main>
+
+        <footer class="action-area">
+            <button id="run-btn" class="btn-primary">Run Preview</button>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
