@@ -1,4 +1,16 @@
 <!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,8 +30,9 @@
                 <div class="editor-header">
                     <span class="lang-label">Code Editor (HTML/CSS/JS)</span>
                     <div class="editor-controls">
-                        <button class="btn-secondary" onclick="pasteCode()">Paste</button>
-                        <button class="btn-secondary" onclick="clearCode()">Clear</button>
+                        <button class="btn-paste" onclick="pasteCode()">Paste</button>
+                        <button class="btn-clear" onclick="clearCode()">Clear</button>
+                        <button class="btn-run" onclick="runPreview()">Run Preview</button>
                     </div>
                 </div>
                 <div class="editor-wrapper">
@@ -40,10 +53,6 @@
                 </div>
             </div>
         </main>
-
-        <footer class="action-area">
-            <button id="run-btn" class="btn-primary">Run Preview</button>
-        </footer>
     </div>
 
     <script src="app.js"></script>

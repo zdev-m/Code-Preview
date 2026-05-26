@@ -97,6 +97,8 @@ header p {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .lang-label {
@@ -110,22 +112,64 @@ header p {
 .editor-controls {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-paste,
+.btn-clear,
+.btn-run {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+}
+
+.btn-paste {
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent-color);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.btn-paste:hover {
+    background: rgba(56, 189, 248, 0.22);
+    border-color: rgba(56, 189, 248, 0.45);
+}
+
+.btn-clear {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--danger-color);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.btn-clear:hover {
+    background: rgba(239, 68, 68, 0.22);
+    border-color: rgba(239, 68, 68, 0.45);
+}
+
+.btn-run {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 4px 14px 0 rgba(56, 189, 248, 0.39);
+}
+
+.btn-run:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+}
+
+.btn-run:active {
+    transform: translateY(0);
 }
 
 .btn-secondary {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-muted);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.btn-secondary:hover {
-    background: var(--border-color);
-    color: var(--text-main);
+    display: none;
 }
 
 .editor-wrapper {
@@ -166,32 +210,11 @@ textarea {
 }
 
 .action-area {
-    display: flex;
-    justify-content: center;
-    padding: 2rem 0;
+    display: none;
 }
 
 .btn-primary {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    border: none;
-    padding: 16px 40px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 4px 14px 0 rgba(56, 189, 248, 0.39);
-}
-
-.btn-primary:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
+    display: none;
 }
 
 .preview-back-btn {

@@ -1,14 +1,11 @@
 /**
  * CodePreview.live - Core Logic
+ * All functions in global scope for onclick handlers
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const runBtn = document.getElementById('run-btn');
     const editor = document.getElementById('main-editor');
-    
-    runBtn.addEventListener('click', runPreview);
 
-    // Add Tab support to the main editor
     editor.addEventListener('keydown', function(e) {
         if (e.key === 'Tab') {
             e.preventDefault();
@@ -23,25 +20,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Sync line numbers on input
     editor.addEventListener('input', updateLineNumbers);
     
-    // Initial line number calculation
     updateLineNumbers();
 });
 
-/**
- * Clears the main editor
- */
 function clearCode() {
     const editor = document.getElementById('main-editor');
     editor.value = '';
     updateLineNumbers();
 }
 
-/**
- * Pastes content from clipboard into the main editor
- */
 async function pasteCode() {
     const editor = document.getElementById('main-editor');
 
@@ -61,9 +50,6 @@ async function pasteCode() {
     }
 }
 
-/**
- * Dynamically updates the line numbers display
- */
 function updateLineNumbers() {
     const editor = document.getElementById('main-editor');
     const lineNumbersContainer = document.getElementById('line-numbers');
@@ -72,59 +58,21 @@ function updateLineNumbers() {
     let lineNumbersHtml = '';
     
     for (let i = 1; i <= lines; i++) {
-        lineNumbersHtml += `<span>${i}</span>`;
+        lineNumbersHtml += '<span>' + i + '</span>';
     }
     
     lineNumbersContainer.innerHTML = lineNumbersHtml;
 }
 
-/**
- * Opens the current editor content in a new full-screen tab
- */
 function runPreview() {
     const code = document.getElementById('main-editor').value;
 
-    // We wrap the user code in a basic HTML shell if they didn't provide one,
-    // but generally, in a single-box editor, the user is expected to write the whole doc.
-    const fullDocument = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Live Preview - CodePreview.live</title>
-    <style>
-        body { margin: 0; padding: 0; }
-        .preview-back-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(8px);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: sans-serif;
-            font-weight: 600;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            text-decoration: none;
-            display: inline-block;
-        }
-        .preview-back-btn:hover {
-            background: rgba(15, 23, 42, 1);
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
-    <a href="javascript:window.close()" class="preview-back-btn">← Back to Editor</a>
-    ${code}
-</body>
-</html>
-    `;
+    if (!code.trim()) {
+        alert('Please write some code first!');
+        return;
+    }
+
+    const fullDocument = '<!DOCTYPE html>\n<html>\n<head>\n    <meta charset="UTF-8">\n    <title>Live Preview - CodePreview.live</title>\n    <style>\n        body { margin: 0; padding: 0; }\n        .preview-back-btn {\n            position: fixed;\n            top: 20px;\n            right: 20px;\n            z-index: 9999;\n            background: rgba(15, 23, 42, 0.85);\n            backdrop-filter: blur(10px);\n            color: white;\n            border: 1px solid rgba(255, 255, 255, 0.25);\n            padding: 12px 24px;\n            border-radius: 40px;\n            cursor: pointer;\n            font-family: \'Inter\', sans-serif;\n            font-weight: 700;\n            font-size: 0.9rem;\n            transition: all 0.25s ease;\n            box-shadow: 0 8px 24px rgba(0,0,0,0.5);\n            text-decoration: none;\n            display: inline-block;\n        }\n        .preview-back-btn:hover {\n            background: rgba(15, 23, 42, 1);\n            transform: scale(1.08);\n            border-color: #38bdf8;\n        }\n    </style>\n</head>\n<body>\n    <a href="#" class="preview-back-btn" onclick="window.close()">Back to Editor</a>\n    ' + code + '\n</body>\n</html>';
 
     const previewWindow = window.open('', '_blank');
     
