@@ -157,18 +157,29 @@ function clearCode() {
   }
 }
 
+// FIXED: Paste at cursor position, not at end
 async function pasteCode() {
   const editor = document.getElementById('main-editor');
   try {
-    const text = await navigator.clipboard.readText();
+    // Save current cursor position and selection
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
-    editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
+    const currentValue = editor.value;
+    
+    // Get text from clipboard
+    const text = await navigator.clipboard.readText();
+    
+    // Insert text at cursor position (not at the end)
+    const newValue = currentValue.substring(0, start) + text + currentValue.substring(end);
+    editor.value = newValue;
+    
+    // Set cursor position after the pasted text
     editor.selectionStart = editor.selectionEnd = start + text.length;
+    
     editor.focus();
     refresh();
   } catch {
-    alert('Please allow clipboard access to use Paste.');
+    alert('Please allow clipboard access to use Paste. You can also use Ctrl+V');
   }
 }
 
@@ -231,7 +242,7 @@ function runPreview() {
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Live Preview — CodePreview.live</title>
 </head>
 <body>
