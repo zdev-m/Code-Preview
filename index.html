@@ -1,25 +1,372 @@
 <!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Code Previewer</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CodePreview | Live HTML/CSS/JS Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --editor-bg: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --accent-hover: #7dd3fc;
+            --danger-color: #ef4444;
+            --upload-color: #a78bfa;
+            --border-color: #334155;
+            --font-mono: 'Fira Code', 'Cascadia Code', monospace;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #0a0f1f 100%);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 24px;
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(2px);
+        }
+
+        .app-container::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 26px;
+            padding: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--accent-color) 25%, 
+                var(--upload-color) 50%, 
+                var(--accent-color) 75%, 
+                transparent 100%);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            animation: borderFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderFlow {
+            0% { opacity: 0; }
+            30% { opacity: 0.6; }
+            70% { opacity: 0.6; }
+            100% { opacity: 0; }
+        }
+
+        .app-container:hover::before {
+            opacity: 0.8;
+            animation: borderFlow 2s ease-in-out infinite;
+        }
+
+        header {
+            text-align: center;
+            padding: 32px 24px 16px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        header h1 .logo {
+            color: var(--accent-color);
+            font-weight: 800;
+        }
+
+        header h1 span {
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+
+        .editor-container {
+            padding: 0 24px 32px;
+        }
+
+        .editor-block {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .editor-block:focus-within {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .editor-header {
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .editor-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--accent-color), 
+                var(--upload-color), 
+                var(--accent-color), 
+                transparent);
+            transform: scaleX(0);
+            transition: transform 0.6s ease;
+            transform-origin: left;
+        }
+
+        .editor-block:focus-within .editor-header::after {
+            transform: scaleX(1);
+        }
+
+        .editor-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-upload {
+            background: rgba(167, 139, 250, 0.12);
+            color: var(--upload-color);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .btn-upload:hover {
+            background: rgba(167, 139, 250, 0.25);
+            border-color: var(--upload-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-paste {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-color);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-paste:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-clear {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-clear:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: var(--danger-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, var(--accent-color), #0284c7);
+            color: #0f172a;
+            border: none;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);
+            font-weight: 700;
+        }
+
+        .btn-run:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.55);
+            background: linear-gradient(135deg, #7dd3fc, #0ea5e9);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .editor-wrapper {
+            display: flex;
+            height: 560px;
+            position: relative;
+        }
+
+        .line-numbers {
+            width: 52px;
+            background: rgba(0, 0, 0, 0.35);
+            color: #5b6e8c;
+            text-align: right;
+            padding: 16px 10px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.6;
+            user-select: none;
+            border-right: 1px solid var(--border-color);
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        .editor-block:focus-within .line-numbers {
+            border-right-color: var(--accent-color);
+        }
+
+        .line-numbers span {
+            display: block;
+            transition: color 0.2s;
+        }
+
+        .line-numbers span:hover {
+            color: var(--accent-color);
+        }
+
+        textarea {
+            flex: 1;
+            background: var(--editor-bg);
+            color: #e2e8f0;
+            border: none;
+            padding: 16px 18px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            tab-size: 4;
+            caret-color: var(--accent-color);
+        }
+
+        textarea::placeholder {
+            color: #334155;
+            font-style: italic;
+        }
+
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        textarea::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        .preview-close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            color: #e2e8f0;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+        .preview-close-btn:hover {
+            background: #1e293b;
+            border-color: var(--accent-color);
+            transform: scale(1.02);
+            color: white;
+        }
+
+        @media (max-width: 680px) {
+            body { padding: 16px; }
+            header { padding: 20px 16px 8px; }
+            header h1 { font-size: 1.5rem; }
+            .editor-container { padding: 0 16px 24px; }
+            .editor-wrapper { height: 420px; }
+            .line-numbers { width: 40px; font-size: 11px; padding: 12px 6px; }
+            textarea { font-size: 12px; padding: 12px 14px; }
+        }
+
+        @media (max-width: 550px) {
+            .editor-controls button span { display: none; }
+            button { padding: 8px 12px; }
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <header>
             <h1><span class="logo">&lt;/&gt;</span> CodePreview<span>.live</span></h1>
-            <p>Write or upload your HTML, CSS, and JS files.</p>
+            <p>HTML · CSS · JS — see it live</p>
         </header>
 
         <main class="editor-container">
             <div class="editor-block">
                 <div class="editor-header">
-                    <span class="lang-label">Code Editor (HTML/CSS/JS)</span>
                     <div class="editor-controls">
                         <input type="file" id="file-input" accept=".html,.htm,.css,.js,.txt" multiple style="display: none;">
-                        <button class="btn-upload" onclick="document.getElementById('file-input').click()">Upload Files</button>
+                        <button class="btn-upload" onclick="document.getElementById('file-input').click()">Upload</button>
                         <button class="btn-paste" onclick="pasteCode()">Paste</button>
                         <button class="btn-clear" onclick="clearCode()">Clear</button>
                         <button class="btn-run" onclick="runPreview()">Run Preview</button>
@@ -29,22 +376,214 @@
                     <div class="line-numbers" id="line-numbers">
                         <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                     </div>
-                    <textarea id="main-editor" spellcheck="false" placeholder="<html>
-  <style>
-    body { background: #f0f0f0; }
-  </style>
-  <body>
-    <h1>Hello World</h1>
+                    <textarea id="main-editor" spellcheck="false" placeholder="<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: system-ui;
+        }
+        h1 {
+            animation: fadeIn 0.6s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello from CodePreview</h1>
     <script>
-      console.log('Hello!');
+        console.log("Live preview ready!");
     </script>
-  </body>
+</body>
 </html>"></textarea>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        const editor = document.getElementById('main-editor');
+        const fileInput = document.getElementById('file-input');
+        const lineNumbersDiv = document.getElementById('line-numbers');
+
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            let html = '';
+            for (let i = 1; i <= lines; i++) {
+                html += `<span>${i}</span>`;
+            }
+            lineNumbersDiv.innerHTML = html;
+        }
+
+        function syncScroll() {
+            lineNumbersDiv.scrollTop = editor.scrollTop;
+        }
+
+        editor.addEventListener('input', updateLineNumbers);
+        editor.addEventListener('scroll', syncScroll);
+        
+        editor.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+                updateLineNumbers();
+            }
+        });
+
+        updateLineNumbers();
+
+        function uploadFiles(event) {
+            const files = Array.from(event.target.files);
+            if (!files.length) return;
+
+            const allowed = ['.html', '.htm', '.css', '.js', '.txt'];
+            const valid = files.filter(f => allowed.some(ext => f.name.toLowerCase().endsWith(ext)));
+
+            if (!valid.length) {
+                alert('Upload .html, .css, .js, or .txt files only.');
+                event.target.value = '';
+                return;
+            }
+
+            const readers = valid.map(file => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const name = file.name.toLowerCase();
+                    let content = e.target.result;
+                    if (name.endsWith('.css')) {
+                        content = '\n<style>\n' + content + '\n</style>\n';
+                    } else if (name.endsWith('.js')) {
+                        content = '\n<script>\n' + content + '\n<\/script>\n';
+                    }
+                    resolve({ content, type: (name.endsWith('.html') || name.endsWith('.htm')) ? 'html' : 'other' });
+                };
+                reader.onerror = () => reject(new Error(file.name));
+                reader.readAsText(file);
+            }));
+
+            Promise.all(readers).then(results => {
+                const htmlFiles = results.filter(r => r.type === 'html');
+                const others = results.filter(r => r.type !== 'html');
+
+                if (htmlFiles.length) {
+                    let base = htmlFiles[0].content;
+                    const extra = others.map(o => o.content).join('\n');
+                    if (extra.trim()) {
+                        if (base.includes('</head>')) {
+                            base = base.replace('</head>', extra + '\n</head>');
+                        } else if (base.includes('<head>')) {
+                            base = base.replace('<head>', '<head>\n' + extra);
+                        } else {
+                            base = extra + '\n' + base;
+                        }
+                    }
+                    editor.value = base;
+                } else if (others.length) {
+                    editor.value = '<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="UTF-8">\n  <title>Preview</title>\n' +
+                        others.filter(o => o.content.includes('<style')).map(o => o.content).join('\n') +
+                        '\n</head>\n<body>\n' +
+                        others.filter(o => o.content.includes('<script')).map(o => o.content).join('\n') +
+                        '\n</body>\n</html>';
+                }
+
+                updateLineNumbers();
+            }).catch(() => alert('Error reading files'));
+
+            event.target.value = '';
+        }
+
+        function clearCode() {
+            if (editor.value.trim() && confirm('Clear all code?')) {
+                editor.value = '';
+                updateLineNumbers();
+            }
+        }
+
+        async function pasteCode() {
+            try {
+                const text = await navigator.clipboard.readText();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + text.length;
+                updateLineNumbers();
+            } catch {
+                alert('Allow clipboard access or use Ctrl+V');
+            }
+        }
+
+        function runPreview() {
+            const code = editor.value.trim();
+            if (!code) {
+                alert('Write or upload some code first');
+                return;
+            }
+
+            const previewDoc = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview</title>
+  <style>
+    .preview-close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      background: #0f172a;
+      backdrop-filter: blur(12px);
+      color: #e2e8f0;
+      border: 1px solid #38bdf8;
+      padding: 8px 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      text-decoration: none;
+      display: inline-block;
+    }
+    .preview-close-btn:hover {
+      background: #1e293b;
+      border-color: #7dd3fc;
+      color: white;
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body>
+  <button class="preview-close-btn" onclick="window.close()">Close</button>
+  ${code}
+</body>
+</html>`;
+
+            const win = window.open('', '_blank');
+            if (win) {
+                win.document.open();
+                win.document.write(previewDoc);
+                win.document.close();
+            } else {
+                alert('Allow popups for this site');
+            }
+        }
+
+        fileInput.addEventListener('change', uploadFiles);
+    </script>
 </body>
 </html>
