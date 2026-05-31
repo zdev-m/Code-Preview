@@ -225,8 +225,9 @@
             transform: translateY(-2px);
         }
 
+        /* Run Preview Button - Solid Blue */
         .btn-run {
-            background: linear-gradient(135deg, var(--accent-color), #0284c7);
+            background: var(--accent-color);
             color: #0f172a;
             border: none;
             box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);
@@ -234,9 +235,9 @@
         }
 
         .btn-run:hover {
+            background: var(--accent-hover);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(56, 189, 248, 0.55);
-            background: linear-gradient(135deg, #7dd3fc, #0ea5e9);
         }
 
         button:active {
@@ -311,31 +312,32 @@
             border-radius: 4px;
         }
 
+        /* Glassy minimal close button for preview */
         .preview-close-btn {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 16px;
+            right: 16px;
             z-index: 9999;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
-            color: #e2e8f0;
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            padding: 8px 20px;
-            border-radius: 40px;
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 30px;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
             font-weight: 500;
-            font-size: 0.8rem;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
             text-decoration: none;
+            letter-spacing: 0.3px;
         }
 
         .preview-close-btn:hover {
-            background: #1e293b;
-            border-color: var(--accent-color);
-            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
             color: white;
+            transform: scale(1.02);
         }
 
         @media (max-width: 680px) {
@@ -541,27 +543,25 @@
   <style>
     .preview-close-btn {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 16px;
+      right: 16px;
       z-index: 9999;
-      background: #0f172a;
+      background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(12px);
-      color: #e2e8f0;
-      border: 1px solid #38bdf8;
-      padding: 8px 20px;
-      border-radius: 40px;
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 30px;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
       font-weight: 500;
-      font-size: 0.8rem;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      font-size: 0.7rem;
+      transition: all 0.2s ease;
       text-decoration: none;
-      display: inline-block;
     }
     .preview-close-btn:hover {
-      background: #1e293b;
-      border-color: #7dd3fc;
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
       color: white;
       transform: scale(1.02);
     }
