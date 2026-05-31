@@ -6,27 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearBtn = document.getElementById('clearBtn');
   const runBtn = document.getElementById('runBtn');
 
-  // Disable default paste behavior to prevent zoom
-  editor.addEventListener('paste', function(e) {
-    e.preventDefault();
-    
-    // Get pasted text
-    const text = (e.clipboardData || window.clipboardData).getData('text');
-    
-    // Insert at cursor position
-    const start = this.selectionStart;
-    const end = this.selectionEnd;
-    const currentValue = this.value;
-    
-    const newValue = currentValue.substring(0, start) + text + currentValue.substring(end);
-    this.value = newValue;
-    
-    // Set cursor after pasted text
-    this.selectionStart = this.selectionEnd = start + text.length;
-    
-    refresh();
-  });
-
   if (uploadBtn) {
     uploadBtn.addEventListener('click', () => fileInput.click());
   }
@@ -178,25 +157,21 @@ function clearCode() {
   }
 }
 
-// Fixed paste function
 async function pasteCode() {
   const editor = document.getElementById('main-editor');
   try {
     const text = await navigator.clipboard.readText();
-    
-    // Insert at cursor position
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
-    const currentValue = editor.value;
-    
-    const newValue = currentValue.substring(0, start) + text + currentValue.substring(end);
-    editor.value = newValue;
-    
+    const scrollTop = editor.scrollTop;
+    editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
     editor.selectionStart = editor.selectionEnd = start + text.length;
+    editor.scrollTop = scrollTop;
     editor.focus();
+    editor.scrollTop = scrollTop;
     refresh();
   } catch {
-    alert('Please allow clipboard access. You can also use Ctrl+V');
+    alert('Please allow clipboard access to use Paste.');
   }
 }
 
@@ -259,7 +234,7 @@ function runPreview() {
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live Preview — CodePreview.live</title>
 </head>
 <body>
