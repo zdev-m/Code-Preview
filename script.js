@@ -129,7 +129,10 @@ function uploadFiles(event) {
         js.map(file => file.content).join('\n') + '\n</body>\n</html>';
     }
 
-    document.getElementById('main-editor').value = final;
+    const ed = document.getElementById('main-editor');
+    ed.value = final;
+    ed.scrollTop = 0;
+    ed.selectionStart = ed.selectionEnd = 0;
     refresh();
   }).catch(err => alert('Error: ' + err.message));
 
@@ -161,14 +164,16 @@ async function pasteCode() {
   const editor = document.getElementById('main-editor');
   try {
     const text = await navigator.clipboard.readText();
+    const savedScroll = editor.scrollTop;
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
-    const scrollTop = editor.scrollTop;
     editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
-    editor.selectionStart = editor.selectionEnd = start + text.length;
-    editor.scrollTop = scrollTop;
-    editor.focus();
-    editor.scrollTop = scrollTop;
+    // Set cursor to start of pasted content, not end — prevents jump to bottom
+    editor.selectionStart = editor.selectionEnd = start;
+    // Restore scroll after browser paints (focus causes scroll reset)
+    requestAnimationFrame(() => {
+      editor.scrollTop = savedScroll;
+    });
     refresh();
   } catch {
     alert('Please allow clipboard access to use Paste.');
