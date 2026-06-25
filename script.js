@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  editor.addEventListener('input', refresh);
+  editor.addEventListener('input', debouncedRefresh);
   editor.addEventListener('scroll', syncScroll);
 
   if (pasteBtn) pasteBtn.addEventListener('click', pasteCode);
@@ -32,6 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   refresh();
 });
+
+// Debounce: refresh fires max once per 60ms during fast typing
+let _refreshTimer = null;
+function debouncedRefresh() {
+  if (_refreshTimer) return;
+  _refreshTimer = requestAnimationFrame(() => {
+    _refreshTimer = null;
+    refresh();
+  });
+}
 
 function syncScroll() {
   const editor = document.getElementById('main-editor');
@@ -53,9 +63,16 @@ function refresh() {
   if (charCount) charCount.textContent = chars.toLocaleString() + ' chars';
   if (lineCountEl) lineCountEl.textContent = lines + (lines === 1 ? ' line' : ' lines');
 
-  let html = '';
-  for (let i = 1; i <= lines; i++) html += '<span>' + i + '</span>';
-  if (lineNums) lineNums.innerHTML = html;
+  // Build line numbers with fragment to avoid repeated reflows
+  if (lineNums) {
+    const frag = document.createDocumentFragment();
+    for (let i = 1; i <= lines; i++) {
+      const span = document.createElement('span');
+      span.textContent = i;
+      frag.appendChild(span);
+    }
+    lineNums.replaceChildren(frag);
+  }
 }
 
 function uploadFiles(event) {
@@ -168,9 +185,7 @@ async function pasteCode() {
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
     editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
-    // Set cursor to start of pasted content, not end — prevents jump to bottom
     editor.selectionStart = editor.selectionEnd = start;
-    // Restore scroll after browser paints (focus causes scroll reset)
     requestAnimationFrame(() => {
       editor.scrollTop = savedScroll;
     });
@@ -187,46 +202,11 @@ function runPreview() {
     return;
   }
 
-  const backButton = `
-<style>
-  .preview-close {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    z-index: 2147483647;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-    border: none;
-    background: transparent;
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1;
-    transition: color 0.2s ease, opacity 0.2s ease;
-    cursor: pointer;
-    padding: 0;
-  }
-  .preview-close:hover {
-    color: #fff;
-    opacity: 0.9;
-  }
-  .preview-close:active {
-    opacity: 0.7;
-  }
-</style>
-<button class="preview-close" onclick="window.close()">✕</button>`;
-
-  let doc = code;
   const hasHtmlDocument = /<html[\s>]/i.test(code) || /<!doctype html>/i.test(code);
+  let doc;
 
   if (hasHtmlDocument) {
-    if (/<body[\s\S]*?>/i.test(doc)) doc = doc.replace(/<body([\s\S]*?)>/i, '<body$1>' + backButton);
-    else doc += backButton;
+    doc = code;
   } else {
     doc = `<!DOCTYPE html>
 <html>
@@ -236,7 +216,6 @@ function runPreview() {
   <title>Live Preview — CodePreview.live</title>
 </head>
 <body>
-  ${backButton}
   ${code}
 </body>
 </html>`;

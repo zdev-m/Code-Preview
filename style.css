@@ -63,6 +63,7 @@ body::selection { background: rgba(99, 230, 255, .28); color: #fff; }
   pointer-events: none;
   overflow: hidden;
   isolation: isolate;
+  contain: strict;
 }
 
 .bg-grid {
@@ -98,6 +99,7 @@ body::selection { background: rgba(99, 230, 255, .28); color: #fff; }
   filter: blur(68px);
   opacity: .78;
   transform: translateZ(0);
+  will-change: transform;
   animation: orbFloat 14s var(--ease) infinite alternate;
 }
 .orb-1 { width: 390px; height: 390px; left: -90px; top: 95px; background: rgba(99, 230, 255, .18); }
@@ -114,6 +116,7 @@ nav {
   position: sticky;
   top: 14px;
   z-index: 100;
+  will-change: transform;
   width: min(1160px, calc(100% - 32px));
   height: 74px;
   margin: 14px auto 0;
@@ -287,6 +290,7 @@ nav::after {
   -webkit-backdrop-filter: blur(26px) saturate(155%);
   animation: riseIn .82s var(--ease) .08s both;
   transition: border-color .28s var(--ease), box-shadow .28s var(--ease), transform .28s var(--ease);
+  contain: layout style;
 }
 
 @keyframes riseIn {
@@ -373,6 +377,7 @@ nav::after {
   transition: transform .24s var(--spring), border-color .24s var(--ease), background .24s var(--ease), box-shadow .24s var(--ease), color .24s var(--ease);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  will-change: transform;
 }
 
 .btn::before {
