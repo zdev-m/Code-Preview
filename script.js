@@ -197,36 +197,29 @@ function runPreview() {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    padding: 5px 12px;
-    border-radius: 40px;
-    color: #eef6ff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: rgba(255,255,255,0.75);
     text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(15, 23, 42, 0.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+    border: none;
+    background: transparent;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.2px;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    cursor: pointer;
-    background-color: rgba(7, 17, 31, 0.6);
+    font-size: 14px;
     line-height: 1;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    cursor: pointer;
+    padding: 0;
   }
   .preview-close:hover {
-    transform: translateY(-1px);
-    border-color: rgba(99, 230, 255, 0.5);
-    background: rgba(7, 17, 31, 0.8);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+    color: #fff;
+    opacity: 0.9;
   }
   .preview-close:active {
-    transform: translateY(0);
+    opacity: 0.7;
   }
 </style>
-<button class="preview-close" onclick="window.close()">✕ Close</button>`;
+<button class="preview-close" onclick="window.close()">✕</button>`;
 
   let doc = code;
   const hasHtmlDocument = /<html[\s>]/i.test(code) || /<!doctype html>/i.test(code);
