@@ -7,8 +7,11 @@
   <title>CodePreview.live</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="menu.css" />
 </head>
 <body>
+
+  <!-- Ambient background -->
   <div class="bg-canvas" aria-hidden="true">
     <div class="bg-grid"></div>
     <div class="orb orb-1"></div>
@@ -16,14 +19,31 @@
     <div class="orb orb-3"></div>
   </div>
 
+  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
   <nav aria-label="Primary navigation">
     <a class="nav-logo" href="#" aria-label="CodePreview.live home">
       <div class="nav-logo-icon">&lt;/&gt;</div>
       <div class="nav-logo-text">Code<span>Preview</span></div>
     </a>
     <div class="nav-badge">LIVE</div>
+
+    <!-- Hamburger -->
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sideDrawer" type="button">
+      <!-- Hamburger icon -->
+      <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="3" y1="7"  x2="21" y2="7"  />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="17" x2="21" y2="17" />
+      </svg>
+      <!-- Close X icon -->
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="18" y1="6"  x2="6"  y2="18" />
+        <line x1="6"  y1="6"  x2="18" y2="18" />
+      </svg>
+    </button>
   </nav>
 
+  <!-- ═══════════════════ MAIN EDITOR ═══════════════════ -->
   <main class="wrapper">
     <section class="editor-card" aria-label="Code editor">
       <div class="editor-topbar">
@@ -39,17 +59,14 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             Upload
           </button>
-
           <button class="btn btn-paste" type="button" id="pasteBtn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             Paste
           </button>
-
           <button class="btn btn-clear" type="button" id="clearBtn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
             Clear
           </button>
-
           <button class="btn btn-run" type="button" id="runBtn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             Run Preview
@@ -58,9 +75,7 @@
       </div>
 
       <div class="editor-body">
-        <div class="line-nums" id="line-numbers" aria-hidden="true">
-          <span>1</span>
-        </div>
+        <div class="line-nums" id="line-numbers" aria-hidden="true"><span>1</span></div>
         <textarea
           id="main-editor"
           spellcheck="false"
@@ -96,6 +111,737 @@
     </section>
   </main>
 
+  <!-- ═══════════════════ DRAWER BACKDROP ═══════════════════ -->
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+  <!-- ═══════════════════ SIDE DRAWER ═══════════════════ -->
+  <aside id="sideDrawer" class="side-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+
+    <!-- Drawer header -->
+    <div class="drawer-header">
+      <a href="#" class="drawer-logo" aria-label="CodePreview.live home">
+        <div class="drawer-logo-icon">&lt;/&gt;</div>
+        <div class="drawer-logo-text">Code<span>Preview</span></div>
+      </a>
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Nav items -->
+    <nav class="drawer-nav" aria-label="Site sections">
+
+      <!-- Home -->
+      <button class="drawer-nav-item" data-page="" id="homeNavBtn" type="button" aria-label="Go to Home">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <span class="nav-label">Home</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- How To Use -->
+      <button class="drawer-nav-item" data-page="page-how-to-use" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <span class="nav-label">How To Use</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- Features -->
+      <button class="drawer-nav-item" data-page="page-features" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="nav-label">Features</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- Blog -->
+      <button class="drawer-nav-item" data-page="page-blog" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <span class="nav-label">Blog</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- FAQ -->
+      <button class="drawer-nav-item" data-page="page-faq" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <span class="nav-label">FAQ</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- About -->
+      <button class="drawer-nav-item" data-page="page-about" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <span class="nav-label">About</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- Contact -->
+      <button class="drawer-nav-item" data-page="page-contact" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <span class="nav-label">Contact</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <div class="drawer-nav-divider"></div>
+
+      <!-- Privacy Policy -->
+      <button class="drawer-nav-item" data-page="page-privacy" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span class="nav-label">Privacy Policy</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- Terms -->
+      <button class="drawer-nav-item" data-page="page-terms" type="button">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <span class="nav-label">Terms &amp; Conditions</span>
+        <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+    </nav>
+
+    <!-- Drawer footer -->
+    <div class="drawer-footer">Built by <span>Zdev</span></div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════════
+       PAGE OVERLAYS — each slides over the main app
+  ═══════════════════════════════════════════════════════════ -->
+
+  <!-- ── HOW TO USE ── -->
+  <div id="page-how-to-use" class="page-overlay" role="main" aria-label="How To Use">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">How To Use</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Quick Guide
+        </div>
+        <h1 class="page-title">Get started in <span class="grad">seconds</span></h1>
+        <p class="page-subtitle">CodePreview.live lets you write, paste, or upload HTML, CSS, and JavaScript — then instantly preview the result in a new tab. No account needed.</p>
+      </div>
+
+      <div class="how-steps">
+
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <div class="step-title">Paste your code</div>
+            <p class="step-desc">Click anywhere inside the editor and paste your HTML, CSS, or JavaScript. The editor accepts full HTML documents or code snippets — it handles both automatically.</p>
+            <div class="step-code">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Ctrl + V  /  Cmd + V  or use the Paste button
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <div class="step-title">Or upload your files</div>
+            <p class="step-desc">Click the Upload button to select one or more files from your computer. Supported formats: <strong>.html</strong>, <strong>.css</strong>, <strong>.js</strong>, and <strong>.txt</strong>. Multiple files are automatically combined into a single preview.</p>
+            <div class="step-code">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              .html  .css  .js  .txt
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <div class="step-title">Run the preview</div>
+            <p class="step-desc">Press <strong>Run Preview</strong> to open your code in a new browser tab. The preview renders exactly as a real browser would — including scripts, styles, and animations. Make sure popups are allowed for this site.</p>
+            <div class="step-code">
+              <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Click "Run Preview" — a new tab opens instantly
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-title">Edit and iterate</div>
+            <p class="step-desc">Edit directly in the editor — Tab inserts 4 spaces, and the status bar updates character and line counts in real time. Hit Run Preview again any time to re-render your changes.</p>
+            <div class="step-code">
+              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Tab key inserts 4 spaces automatically
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <div class="step-title">Clear and start fresh</div>
+            <p class="step-desc">Use the Clear button to wipe the editor and begin a new project. You will be asked to confirm so no work is lost accidentally.</p>
+            <div class="step-code">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              Clear button → confirm dialog → fresh editor
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FEATURES ── -->
+  <div id="page-features" class="page-overlay" role="main" aria-label="Features">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">Features</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          What's inside
+        </div>
+        <h1 class="page-title">Everything you need to <span class="grad">preview code</span></h1>
+        <p class="page-subtitle">A focused, distraction-free tool built for developers who want instant visual feedback without the setup overhead.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="feature-title">Live Code Preview</div>
+          <p class="feature-desc">Instantly render your HTML, CSS, and JavaScript in a real browser tab. No build step, no CLI — just hit Run.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div class="feature-title">Built-in Code Editor</div>
+          <p class="feature-desc">A clean monospace editor with line numbers, character count, tab indentation, and real-time status — all in the browser.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="feature-title">File Upload Support</div>
+          <p class="feature-desc">Upload HTML, CSS, JS, and text files. Multiple files are automatically merged so your full project renders correctly.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="feature-title">Fast Rendering</div>
+          <p class="feature-desc">The preview opens in a new tab with zero delay. No server-side processing — your code runs directly in the browser engine.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <div class="feature-title">Responsive Testing</div>
+          <p class="feature-desc">Resize the preview window freely to test your layouts across breakpoints — desktop, tablet, and mobile all in one tab.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
+          <div class="feature-title">Developer-First Interface</div>
+          <p class="feature-desc">No ads, no distractions, no account required. A clean dark interface designed around the developer's workflow.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BLOG ── -->
+  <div id="page-blog" class="page-overlay" role="main" aria-label="Blog">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">Blog</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Developer Reads
+        </div>
+        <h1 class="page-title">Insights for <span class="grad">frontend developers</span></h1>
+        <p class="page-subtitle">Practical guides, tips, and resources to help you build, test, and ship code faster.</p>
+      </div>
+
+      <div class="blog-grid">
+
+        <div class="blog-card">
+          <div>
+            <div class="blog-tag tag-guide">Guide</div>
+            <div class="blog-card-title">How to Preview HTML Code Online Without Installing Anything</div>
+            <p class="blog-card-excerpt">You have an HTML snippet and you want to see how it looks — fast. This guide covers the quickest way to go from code to rendered output in seconds using only your browser.</p>
+            <div class="blog-card-meta">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Jun 2026
+              <span>4 min read</span>
+            </div>
+          </div>
+          <div class="blog-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+        </div>
+
+        <div class="blog-card">
+          <div>
+            <div class="blog-tag tag-tools">Tools</div>
+            <div class="blog-card-title">Best Free Code Editors and Playgrounds in 2026</div>
+            <p class="blog-card-excerpt">A curated comparison of the top browser-based editors and local editors for developers — what they do well, what they miss, and when to reach for each one.</p>
+            <div class="blog-card-meta">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              May 2026
+              <span>6 min read</span>
+            </div>
+          </div>
+          <div class="blog-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+        </div>
+
+        <div class="blog-card">
+          <div>
+            <div class="blog-tag tag-beginner">Beginner</div>
+            <div class="blog-card-title">HTML, CSS, and JavaScript: Understanding How They Work Together</div>
+            <p class="blog-card-excerpt">Before writing your first line of frontend code, it helps to understand what each language does and why you need all three. This explainer breaks it down simply.</p>
+            <div class="blog-card-meta">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Apr 2026
+              <span>5 min read</span>
+            </div>
+          </div>
+          <div class="blog-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+        </div>
+
+        <div class="blog-card">
+          <div>
+            <div class="blog-tag tag-tips">Tips</div>
+            <div class="blog-card-title">Frontend Development Tips That Save Hours of Debugging</div>
+            <p class="blog-card-excerpt">Practical habits and workflows that experienced frontend developers use to catch layout bugs faster, write cleaner CSS, and spend less time with DevTools open.</p>
+            <div class="blog-card-meta">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Mar 2026
+              <span>7 min read</span>
+            </div>
+          </div>
+          <div class="blog-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+        </div>
+
+        <div class="blog-card">
+          <div>
+            <div class="blog-tag tag-dev">Dev Workflow</div>
+            <div class="blog-card-title">How Developers Test Code Faster: A Workflow Breakdown</div>
+            <p class="blog-card-excerpt">From browser devtools to online sandboxes to local servers — a look at how professional developers move quickly from idea to working prototype without slowing down.</p>
+            <div class="blog-card-meta">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Feb 2026
+              <span>5 min read</span>
+            </div>
+          </div>
+          <div class="blog-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FAQ ── -->
+  <div id="page-faq" class="page-overlay" role="main" aria-label="FAQ">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">FAQ</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Common Questions
+        </div>
+        <h1 class="page-title">Frequently asked <span class="grad">questions</span></h1>
+        <p class="page-subtitle">Quick answers to the things developers ask most often about CodePreview.live.</p>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            Is CodePreview.live free to use?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>Yes, completely free. No account, no subscription, no paywall. You open the page and start coding. There are no hidden limits on the number of previews you can run.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            Do I need to create an account?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>No account is needed. Just visit the site and start writing or pasting code immediately. Your code stays in your browser and is not sent to any server.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            What file types can I upload?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>You can upload <strong>.html</strong>, <strong>.htm</strong>, <strong>.css</strong>, <strong>.js</strong>, and <strong>.txt</strong> files. Multiple files can be selected at once — CSS and JS are automatically injected into the HTML document before the preview renders.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            Why is the preview not opening?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>The preview opens in a new browser tab. If nothing happens, your browser is likely blocking popups from this site. Look for the popup-blocked icon in your address bar and allow popups for CodePreview.live, then click Run Preview again.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            Does my code get saved or stored anywhere?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>No. Your code exists only in your browser while the page is open. Nothing is transmitted to a server, logged, or persisted. Refreshing the page clears the editor.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            Can I use external libraries like Bootstrap or React?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>Yes. Include any CDN links directly in your HTML code using standard <code>&lt;script&gt;</code> and <code>&lt;link&gt;</code> tags and they will load normally in the preview tab, as long as you have an internet connection.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            Does it work on mobile devices?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>The editor and interface are fully responsive and work on mobile browsers. Typing large amounts of code on mobile is less comfortable than on a keyboard, but quick pastes and file uploads work well on phones and tablets.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" type="button">
+            Who built CodePreview.live?
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            <p>CodePreview.live was built by Zdev — a solo developer focused on creating clean, fast, no-friction tools for the developer community.</p>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <div id="page-about" class="page-overlay" role="main" aria-label="About">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">About</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          The tool
+        </div>
+        <h1 class="page-title">Built for <span class="grad">developers</span> who move fast</h1>
+        <p class="page-subtitle">CodePreview.live started from a simple frustration: previewing a snippet of HTML should not require opening an IDE, creating a file, and starting a server.</p>
+      </div>
+
+      <div class="about-hero-badge">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Zero setup. Instant results.
+      </div>
+
+      <div class="about-body">
+        <p><strong>CodePreview.live</strong> is a browser-based HTML, CSS, and JavaScript preview tool designed to eliminate the friction between writing code and seeing it run. Paste a snippet, upload a file, click Run — that is the entire workflow.</p>
+        <p>The tool handles full HTML documents and bare code fragments equally well, wrapping snippets in a complete document automatically so the output always renders correctly. CSS and JavaScript files uploaded alongside HTML are injected in the right places without any manual wiring.</p>
+        <p>Everything runs in your browser. No sign-in, no telemetry, no upload to a remote server. The code you write stays on your machine until the moment you choose to run it — at which point the browser opens it directly, the same way it would open any local HTML file.</p>
+      </div>
+
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">0</div>
+          <div class="about-stat-label">Sign-ups required</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">&lt;1s</div>
+          <div class="about-stat-label">Time to first preview</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">100%</div>
+          <div class="about-stat-label">Browser-side processing</div>
+        </div>
+      </div>
+
+      <div class="about-values">
+        <div class="about-value-item">
+          <div class="about-value-dot"></div>
+          <div>
+            <div class="about-value-title">Speed over ceremony</div>
+            <p class="about-value-desc">Every interaction is optimized to be as immediate as possible. No loading screens, no modals, no onboarding flows.</p>
+          </div>
+        </div>
+        <div class="about-value-item">
+          <div class="about-value-dot"></div>
+          <div>
+            <div class="about-value-title">Privacy by default</div>
+            <p class="about-value-desc">Your code never leaves your machine. No analytics on what you write, no server logs of your work.</p>
+          </div>
+        </div>
+        <div class="about-value-item">
+          <div class="about-value-dot"></div>
+          <div>
+            <div class="about-value-title">Designed for focus</div>
+            <p class="about-value-desc">No ads, no popups, no upsells. Just the editor and a Run button. The interface gets out of the way so you can think about code.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CONTACT ── -->
+  <div id="page-contact" class="page-overlay" role="main" aria-label="Contact">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">Contact</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Get in touch
+        </div>
+        <h1 class="page-title">We would love to <span class="grad">hear from you</span></h1>
+        <p class="page-subtitle">Have a bug to report, a feature idea, or just want to say something? Reach out — responses usually come within 48 hours.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-card-title">Email</div>
+          <p class="contact-card-desc">For bug reports, feedback, and general inquiries. Best for detailed messages.</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="contact-card-title">Feedback</div>
+          <p class="contact-card-desc">Feature requests and suggestions to improve the tool for developers like you.</p>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+        <div class="form-title">Send a message</div>
+        <p class="form-subtitle">Fill out the form and we will get back to you as soon as possible.</p>
+
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="contact-name">Name</label>
+              <input class="form-input" type="text" id="contact-name" name="name" placeholder="Your name" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-email">Email</label>
+              <input class="form-input" type="email" id="contact-email" name="email" placeholder="you@example.com" autocomplete="email" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-subject">Subject</label>
+            <input class="form-input" type="text" id="contact-subject" name="subject" placeholder="What is this about?" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-message">Message</label>
+            <textarea class="form-textarea" id="contact-message" name="message" placeholder="Tell us more..."></textarea>
+          </div>
+          <button class="form-submit" type="submit">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PRIVACY POLICY ── -->
+  <div id="page-privacy" class="page-overlay" role="main" aria-label="Privacy Policy">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">Privacy Policy</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Legal
+        </div>
+        <h1 class="page-title">Privacy <span class="grad">Policy</span></h1>
+      </div>
+
+      <div class="legal-date">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Last updated: June 2026
+      </div>
+
+      <div class="legal-content">
+        <h2>Overview</h2>
+        <p>CodePreview.live ("we", "the tool", "the service") is committed to protecting your privacy. This policy explains what information is collected, how it is used, and your rights as a user.</p>
+
+        <h2>Information We Do Not Collect</h2>
+        <p>CodePreview.live is a client-side tool. The code you write, paste, or upload in the editor is processed entirely within your browser. It is never transmitted to our servers, stored in any database, or shared with third parties.</p>
+        <ul>
+          <li>We do not collect the code you write or upload.</li>
+          <li>We do not require or collect any account credentials.</li>
+          <li>We do not track individual users or build profiles.</li>
+          <li>We do not sell any data to third parties.</li>
+        </ul>
+
+        <h2>Cookies and Local Storage</h2>
+        <p>CodePreview.live does not use tracking cookies. No data is persisted to your browser's local storage or session storage. Each page load starts with a clean state.</p>
+
+        <h2>Analytics</h2>
+        <p>If basic analytics are collected (such as page view counts), they are aggregated and anonymised. No personally identifiable information is included in any analytics data.</p>
+
+        <h2>Third-Party Services</h2>
+        <p>CodePreview.live does not embed third-party advertising, social tracking pixels, or affiliate tracking scripts. If external CDN resources are loaded as part of your own preview code, those requests are initiated by your browser directly to those services and are governed by their respective privacy policies.</p>
+
+        <h2>Children's Privacy</h2>
+        <p>CodePreview.live is a general developer tool and is not directed at children under the age of 13. We do not knowingly collect information from children.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Changes will be reflected on this page with an updated date. Your continued use of the service after changes constitutes acceptance of the updated policy.</p>
+
+        <h2>Contact</h2>
+        <p>If you have questions about this privacy policy, you can reach us through the Contact page.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TERMS & CONDITIONS ── -->
+  <div id="page-terms" class="page-overlay" role="main" aria-label="Terms and Conditions">
+    <div class="page-topbar">
+      <button class="page-back-btn" type="button">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="page-topbar-title">Terms &amp; Conditions</span>
+    </div>
+    <div class="page-content">
+      <div class="page-hero">
+        <div class="page-hero-eyebrow">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Legal
+        </div>
+        <h1 class="page-title">Terms &amp; <span class="grad">Conditions</span></h1>
+      </div>
+
+      <div class="legal-date">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Last updated: June 2026
+      </div>
+
+      <div class="legal-content">
+        <h2>Acceptance of Terms</h2>
+        <p>By accessing and using CodePreview.live, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the service.</p>
+
+        <h2>Use of the Service</h2>
+        <p>CodePreview.live is provided as a free developer utility. You may use the service for:</p>
+        <ul>
+          <li>Testing and previewing HTML, CSS, and JavaScript code.</li>
+          <li>Learning web development concepts.</li>
+          <li>Prototyping and debugging frontend code snippets.</li>
+          <li>Any other lawful development purpose.</li>
+        </ul>
+
+        <h2>Prohibited Use</h2>
+        <p>You agree not to use the service to:</p>
+        <ul>
+          <li>Execute malicious scripts or code designed to cause harm.</li>
+          <li>Attempt to exploit, overload, or interfere with the service.</li>
+          <li>Distribute illegal content through previews.</li>
+          <li>Violate any applicable laws or third-party rights.</li>
+        </ul>
+
+        <h2>Intellectual Property</h2>
+        <p>The code you write in the editor remains your own. CodePreview.live does not claim ownership over any code you create or preview using the service. The CodePreview.live interface, design, and source code are the property of Zdev and may not be copied or reproduced without permission.</p>
+
+        <h2>Disclaimer of Warranties</h2>
+        <p>CodePreview.live is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not guarantee that the service will be error-free, uninterrupted, or suitable for any particular purpose.</p>
+
+        <h2>Limitation of Liability</h2>
+        <p>To the fullest extent permitted by applicable law, Zdev shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use the service.</p>
+
+        <h2>Changes to Terms</h2>
+        <p>We reserve the right to modify these terms at any time. Continued use of the service after changes constitutes acceptance of the updated terms.</p>
+
+        <h2>Contact</h2>
+        <p>For questions about these terms, please use the Contact page.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
   <script src="script.js"></script>
+  <script src="menu.js"></script>
 </body>
 </html>
